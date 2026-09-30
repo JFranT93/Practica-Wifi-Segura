@@ -26,3 +26,33 @@ Entre las cabeceras enviadas por el navegador se destacan:
 ### Evidencia
 
 ![Inspección de Red en NeverSSL](01_Network_NeverSSL.png)
+
+
+## Parte 2 – Análisis
+
+### 1. ¿Qué protocolo utiliza el sitio?
+Utiliza **HTTP** sin cifrar (específicamente HTTP/1.1 por el puerto 80). En el navegador se ve claramente el cartel de *"Not secure"* al lado de la barra de direcciones, y en la pestaña de red no hay ningún certificado de seguridad ni capa TLS/SSL. 
+
+### 2. ¿Qué información puede observarse durante la solicitud?
+Cualquier persona que esté mirando la red puede ver los datos completos en texto plano:
+* **La URL y el Host:** Se ve claramente la dirección exacta a la que ingresé (`http://beautifulgrandclearverse.neverssl.com/online/`) y el servidor de destino.
+* **El método utilizado:** Se aprecia que se envió una petición `GET` para solicitar la página web.
+* **El User-Agent y Headers:** Queda expuesto el navegador y sistema operativo exacto que uso (`Mozilla/5.0... Windows NT 10.0; Chrome/154.0.0.0`), junto con el idioma y las capacidades de compresión aceptadas (`Accept-Encoding: gzip, deflate`).
+
+### 3. ¿Qué riesgos existen al navegar mediante HTTP desde una red Wi-Fi pública?
+Al no tener cifrado, cualquier atacante conectado a la misma red puede usar un sniffer de paquetes (como Wireshark) o montar un ataque *Man-in-the-Middle* para espiar lo que hago. Podría interceptar:
+* Formularios, usuarios, contraseñas o datos personales enviados.
+* Cookies de sesión para clonarme la cuenta sin necesidad de saber la clave.
+* Páginas vistas e historial de navegación.
+* Incluso podría inyectar código malicioso en el sitio que estoy viendo para engañarme o infectar mi equipo.
+
+### 4. ¿Cómo cambiaría este escenario utilizando una VPN?
+Si conecto una VPN antes de entrar al sitio, la situación cambia por completo:
+* **Túnel seguro y cifrado:** Se crea un túnel hermético entre mi máquina y el servidor de la VPN; todos los datos que salen de mi compu se cifran antes de tocar el aire de la red Wi-Fi.
+* **Protección del tráfico:** Aunque el sitio final sea HTTP inseguro, el tramo peligroso (la red pública) queda blindado. Un atacante en la misma cafetería o aeropuerto solo vería paquetes cifrados incomprensibles.
+* **Privacidad:** Mi dirección IP real queda oculta, ya que para Internet mi tráfico sale con la IP del servidor VPN, evitando que rastreen mi ubicación real o lo que visito desde esa red.
+
+### 5. Mis 3 Reglas de Oro para navegar en redes Wi-Fi públicas
+1. **Activar siempre una VPN de confianza** antes de conectar y transmitir cualquier dato para encapsular todo el tráfico en un canal cifrado.
+2. **Revisar que los sitios usen HTTPS** (con el candadito) y jamás introducir contraseñas, tarjetas de crédito ni datos sensibles si la web figura como *"No segura"*.
+3. **Desactivar la reconexión automática y el uso compartido de archivos:** Configurar la red en la computadora como "Red pública" para bloquear el descubrimiento de mi equipo y evitar que el dispositivo se una solo a redes abiertas desconocidas.
